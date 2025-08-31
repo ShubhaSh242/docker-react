@@ -1,9 +1,28 @@
-sudo: required 
-services:
-  - docker  
+# Specify the language and distribution
+language: node_js
+node_js:
+  - "14"  # Use a Node.js version compatible with your project
+dist: bionic  # Use a modern Ubuntu version
 
+# Enable sudo for Docker (optional in newer setups)
+sudo: required
+
+# Enable Docker service
+services:
+  - docker
+
+# Install any additional dependencies if needed
+install:
+  - echo "No additional dependencies needed"
+
+# Build the Docker image before running tests
 before_install:
   - docker build -t docker-react -f Dockerfile.dev .
-  
+
+# Run the tests
 script:
-    - docker run -e CI=true docker-react npm run test -- --coverage
+  - docker run -e CI=true docker-react npm run test -- --coverage
+
+# Optional: Notify on failure (e.g., email or Slack)
+notifications:
+  email: false  # Disable email notifications by default
